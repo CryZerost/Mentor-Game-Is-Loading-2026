@@ -9,10 +9,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Collectible
   - Water
   - UI
-  - 
+  - Entity
   - 
   - 
   - 
@@ -41,6 +41,12 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 1808218167
+    locked: 0
+  - name: Collectibl
+    uniqueID: 1634831243
     locked: 0
   m_RenderingLayers:
   - Default
