@@ -13,6 +13,11 @@ public class Player : MonoBehaviour
     public int coinScore = 0;
     public TMP_Text textScore;
 
+    //referensi untuk animasi
+    public Animator playerAnimator;
+    public SpriteRenderer playerSprite;
+
+    public GameObject bullet;
 
 
 
@@ -27,24 +32,54 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        PlayerAnimation();
+        PlayerShoot();
+        PlayerJump();
+        PlayerMovement();
+
+    }
+
+    public void PlayerShoot()
+    {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            playerHealth--;
-            print("sisa health dari player" + playerHealth);
+            var bulletSpawn = Instantiate(bullet, new Vector3(transform.position.x + 1f, transform.position.y, 0f), Quaternion.identity);
+            bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.one * 2);
+
         }
+    }
 
-         move.x = Input.GetAxisRaw("Horizontal");
-
-
-
-        rb.linearVelocity = new Vector2(move.x * moveSpeed, rb.linearVelocity.y);
-        
+    public void PlayerJump()
+    {
         if (Input.GetKeyDown(KeyCode.Space) && isGround)
         {
             isGround = false;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
 
+    }
+
+    public void PlayerMovement()
+    {
+        move.x = Input.GetAxisRaw("Horizontal");
+
+        rb.linearVelocity = new Vector2(move.x * moveSpeed, rb.linearVelocity.y);
+    }
+
+    public void PlayerAnimation()
+    {
+        playerAnimator.SetBool("isWalking", Input.GetAxisRaw("Horizontal") != 0);
+
+        if (Input.GetAxisRaw("Horizontal") < 0)
+        {
+            playerSprite.flipX = true;
+        }
+        else if (Input.GetAxisRaw("Horizontal") > 0)
+        {
+            playerSprite.flipX = false;
+        }
+
+        playerAnimator.SetBool("isJumping", !isGround);
     }
 
     public void AddCoinScore(int value)
@@ -57,6 +92,7 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.CompareTag("Ground"))
         {
+            
             if (!isGround)
             {
                 isGround = true;
