@@ -1,8 +1,11 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    public static Player instance;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public int playerHealth;
     public float moveSpeed = 5f;
@@ -19,7 +22,20 @@ public class Player : MonoBehaviour
 
     public GameObject bullet;
 
+    private void Awake()
+    {
 
+        if (instance == null)
+        {
+            instance = this;
+
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -88,6 +104,12 @@ public class Player : MonoBehaviour
         textScore.text = "Jumlah koin: " + coinScore;
     }
 
+    public void ResetCoin()
+    {
+        coinScore = 0;
+        textScore.text = "Jumlah koin: " + coinScore;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Ground"))
@@ -99,4 +121,6 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+  
 }
